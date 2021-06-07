@@ -7,6 +7,14 @@ fullnameOverride: ""
 
 kafka:
   replicas: 3
+  clusterCA:
+    generateCertificateAuthority: true
+    validityDays: 730
+    renewalDays: 60
+  clientsCA:
+    generateCertificateAuthority: true
+    validityDays: 365
+    renewalDays: 15
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
