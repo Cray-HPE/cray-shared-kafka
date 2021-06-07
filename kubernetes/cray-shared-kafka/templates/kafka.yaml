@@ -39,6 +39,14 @@ spec:
     resources:
       {{ toYaml . | nindent 6 }}
 {{- end }}
+{{- with .Values.kafka.clientsCA }}
+    clientsCA:
+      {{ toYaml . | nindent 6 }}
+{{- end }}
+{{- with .Values.kafka.clusterCA }}
+    clusterCA:
+      {{ toYaml . | nindent 6 }}
+{{- end }}
   zookeeper:
     replicas: 3
     storage:
