@@ -1,0 +1,20 @@
+apiVersion: v2
+name: cray-shared-kafka
+version: 0.6.0
+description: Shared Kafka cluster for systems management services.
+keywords:
+  - cray-shared-kafka
+home: https://github.com/Cray-HPE/cray-shared-kafka
+maintainers:
+  - name: bklei
+appVersion: 2.2.1  # Tracks Kafka version
+annotations:
+  artifacthub.io/changes: |
+    - kind: security
+      description: Updated images to CSM patched versions
+      links:
+        - name: Github Issue
+          url: https://github.com/Cray-HPE/cray-shared-kafka/issues/4
+        - name: Github PR
+          url: https://github.com/Cray-HPE/cray-shared-kafka/pull/3
+  artifacthub.io/license: MIT
