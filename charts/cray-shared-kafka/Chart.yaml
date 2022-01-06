@@ -7,7 +7,7 @@ keywords:
 home: https://github.com/Cray-HPE/cray-shared-kafka
 maintainers:
   - name: bklei
-appVersion: 2.8.1 # Tracks Kafka version
+appVersion: 2.8.1  # Tracks Kafka version
 annotations:
   artifacthub.io/changes: |
     - kind: security
