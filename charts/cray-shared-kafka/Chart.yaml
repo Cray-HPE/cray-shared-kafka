@@ -1,13 +1,13 @@
 apiVersion: v2
 name: cray-shared-kafka
-version: 0.6.0
+version: 1.0.0
 description: Shared Kafka cluster for systems management services.
 keywords:
   - cray-shared-kafka
 home: https://github.com/Cray-HPE/cray-shared-kafka
 maintainers:
   - name: bklei
-appVersion: 2.2.1  # Tracks Kafka version
+appVersion: 2.8.1 # Tracks Kafka version
 annotations:
   artifacthub.io/changes: |
     - kind: security
