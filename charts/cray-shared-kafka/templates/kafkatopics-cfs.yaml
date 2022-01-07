@@ -1,5 +1,5 @@
-# Copyright 2020 Hewlett Packard Enterprise Development LP
-apiVersion: kafka.strimzi.io/v1alpha1
+# Copyright 2020,2022 Hewlett Packard Enterprise Development LP
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: cfs-session-events
