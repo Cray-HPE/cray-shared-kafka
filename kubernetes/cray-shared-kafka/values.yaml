@@ -7,6 +7,13 @@ fullnameOverride: ""
 
 kafka:
   replicas: 3
+  image:
+    repository: strimzi/kafka
+    tag: 0.15.0-kafka-2.2.1-noJSM-chainsaw
+  tlsSideCar:
+    image: 
+      repository: strimzi/kafka
+      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
   clusterCA:
     generateCertificateAuthority: true
     validityDays: 730
@@ -36,6 +43,13 @@ kafka:
       memory: 64Mi
 
 zookeeper:
+  image:
+    repository: strimzi/kafka
+    tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
+  tlsSideCar:
+    image:
+      repository: strimzi/kafka
+      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -55,3 +69,9 @@ zookeeper:
     requests:
       cpu: 10m
       memory: 64Mi
+
+entityOperator:
+  tlsSideCar:
+    image:
+      repository: strimzi/kafka
+      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
