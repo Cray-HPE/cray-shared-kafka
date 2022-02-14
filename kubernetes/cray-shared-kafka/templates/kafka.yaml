@@ -9,6 +9,9 @@ spec:
   kafka:
     version: 2.2.1
     replicas: {{ .Values.kafka.replicas }}
+    image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag }}"
+    tlsSidecar:
+      image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
     listeners:
       plain: {}
       #tls: {}
@@ -49,6 +52,9 @@ spec:
 {{- end }}
   zookeeper:
     replicas: 3
+    image: "{{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag }}"
+    tlsSidecar:
+      image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
     storage:
       type: persistent-claim
       size: 100Gi
@@ -71,6 +77,8 @@ spec:
           {{ toYaml . | nindent 6 }}
 {{- end }}
   entityOperator:
+    tlsSidecar:
+      image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
     topicOperator: {}
     userOperator: {}
     template:
