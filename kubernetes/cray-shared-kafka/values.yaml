@@ -10,10 +10,6 @@ kafka:
   image:
     repository: strimzi/kafka
     tag: 0.15.0-kafka-2.2.1-noJSM-chainsaw
-  tlsSideCar:
-    image: 
-      repository: strimzi/kafka
-      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
   clusterCA:
     generateCertificateAuthority: true
     validityDays: 730
@@ -29,10 +25,10 @@ kafka:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-              - key: strimzi.io/name
-                operator: In
-                values:
-                - cray-shared-kafka-kafka
+                - key: strimzi.io/name
+                  operator: In
+                  values:
+                    - cray-shared-kafka-kafka
             topologyKey: "kubernetes.io/hostname"
   resources:
     limits:
@@ -46,10 +42,6 @@ zookeeper:
   image:
     repository: strimzi/kafka
     tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
-  tlsSideCar:
-    image:
-      repository: strimzi/kafka
-      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -57,10 +49,10 @@ zookeeper:
           podAffinityTerm:
             labelSelector:
               matchExpressions:
-              - key: strimzi.io/name
-                operator: In
-                values:
-                - cray-shared-kafka-zookeeper
+                - key: strimzi.io/name
+                  operator: In
+                  values:
+                    - cray-shared-kafka-zookeeper
             topologyKey: "kubernetes.io/hostname"
   resources:
     limits:
@@ -70,8 +62,7 @@ zookeeper:
       cpu: 10m
       memory: 64Mi
 
-entityOperator:
-  tlsSideCar:
-    image:
-      repository: strimzi/kafka
-      tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
+tlsSidecar:
+  image:
+    repository: strimzi/kafka
+    tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
