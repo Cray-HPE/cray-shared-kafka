@@ -3,4 +3,4 @@ apiVersion: v1
 appVersion: "2.2.1"
 description: Shared Kafka cluster for systems management services.
 name: cray-shared-kafka
-version: 0.6.0
+version: 0.7.0
