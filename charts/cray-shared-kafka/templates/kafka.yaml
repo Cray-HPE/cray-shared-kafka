@@ -9,9 +9,13 @@ spec:
   kafka:
     version: 2.2.1
     replicas: {{ .Values.kafka.replicas }}
+    {{- if .Values.kafka.image }}
     image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag }}"
+    {{- end }}
+    {{- if .Values.tlsSidecar.image }}
     tlsSidecar:
       image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
+    {{- end }}
     listeners:
       plain: {}
       #tls: {}
@@ -52,9 +56,13 @@ spec:
 {{- end }}
   zookeeper:
     replicas: 3
+    {{- if .Values.zookeeper.image }}
     image: "{{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag }}"
+    {{- end }}
+    {{- if .Values.tlsSidecar.image }}
     tlsSidecar:
       image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
+    {{- end }}
     storage:
       type: persistent-claim
       size: 100Gi
@@ -77,8 +85,10 @@ spec:
           {{ toYaml . | nindent 6 }}
 {{- end }}
   entityOperator:
+    {{- if .Values.tlsSidecar.image }}
     tlsSidecar:
       image: "{{ .Values.tlsSidecar.image.repository }}:{{ .Values.tlsSidecar.image.tag }}"
+    {{- end }}
     topicOperator: {}
     userOperator: {}
     template:

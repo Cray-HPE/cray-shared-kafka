@@ -8,8 +8,8 @@ fullnameOverride: ""
 kafka:
   replicas: 3
   image:
-    repository: strimzi/kafka
-    tag: 0.15.0-kafka-2.2.1-noJSM-chainsaw
+  #   repository:
+  #   tag:
   clusterCA:
     generateCertificateAuthority: true
     validityDays: 730
@@ -40,8 +40,8 @@ kafka:
 
 zookeeper:
   image:
-    repository: strimzi/kafka
-    tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
+  #   repository:
+  #   tag:
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -64,5 +64,5 @@ zookeeper:
 
 tlsSidecar:
   image:
-    repository: strimzi/kafka
-    tag: 0.15.0-kafka-2.3.1-noJSM-chainsaw
+  #   repository:
+  #   tag:
