@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Hewlett Packard Enterprise Development LP
+# Copyright 2021-2024 Hewlett Packard Enterprise Development LP
 
 CHART_METADATA_IMAGE ?= artifactory.algol60.net/csm-docker/stable/chart-metadata
 YQ_IMAGE ?= artifactory.algol60.net/docker.io/mikefarah/yq:4
@@ -28,7 +28,7 @@ dep-up:
 test:
 	docker run --rm \
 		-v ${PWD}/charts:/apps \
-		${HELM_UNITTEST_IMAGE} -3 \
+		${HELM_UNITTEST_IMAGE} \
 		cray-shared-kafka
 
 package:
