@@ -1,0 +1,72 @@
+{{- /*
+MIT License
+
+(C) Copyright 2024 Hewlett Packard Enterprise Development LP
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+*/}}
+
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "cray-kafka-pre-upgrade-cleanup"
+  annotations:
+    helm.sh/hook: pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      name: "cray-kafka-pre-upgrade-cleanup"
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      serviceAccountName: "cray-shared-kafka-entity-operator"
+      restartPolicy: Never
+      containers:
+        - name: cray-kafka-pre-upgrade-cleanup
+          image: "{{ .Values.kubectl.image.repository }}:{{ .Values.kubectl.image.tag }}"
+          imagePullPolicy: "{{ .Values.kubectl.image.pullPolicy }}"
+          command:
+            - '/bin/sh'
+          args:
+            - "-c"
+            - |
+              echo "Cleaning up internal topics used by strimzi operator"
+              store_topic=$(kubectl get kt -n {{ .Values.namespace }} -o name | grep strimzi-store-topic)
+              if [ -n "$store_topic" ]; then
+                kubectl delete -n {{ .Values.namespace }} "$store_topic"
+              fi
+              topic_operator=$(kubectl get kt -n {{ .Values.namespace }} -o name | grep strimzi-topic-operator)
+              if [ -n "$topic_operator" ]; then
+                kubectl delete -n {{ .Values.namespace }} "$topic_operator"
+              fi
+              consumer_offset_topic=$(kubectl get kt -n {{ .Values.namespace }} -o name | grep consumer-offsets)
+              if [ -n "$consumer_offset_topic" ]; then
+                kubectl annotate -n {{ .Values.namespace }} "$consumer_offset_topic" strimzi.io/managed="false"
+                topic_json=$(kubectl get -n {{ .Values.namespace }} "$consumer_offset_topic" -o json)
+                while [ $(echo "$topic_json" | jq -r '.metadata.generation') != $(echo "$topic_json" | jq -r '.status.observedGeneration') ];
+                do
+                  echo "Waiting for reconciliation of strimzi operator internal topics ..."
+                  sleep 1
+                done;
+                kubectl delete -n {{ .Values.namespace }} "$consumer_offset_topic"
+              fi
+              echo "Internal topics deleted"

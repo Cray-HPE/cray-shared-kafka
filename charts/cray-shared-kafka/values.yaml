@@ -4,6 +4,7 @@
 
 nameOverride: ""
 fullnameOverride: ""
+namespace: "services"
 
 kafka:
   replicas: 3
@@ -55,3 +56,9 @@ zookeeper:
     requests:
       cpu: 10m
       memory: 64Mi
+
+kubectl:
+  image:
+    repository: artifactory.algol60.net/csm-docker/stable/docker-kubectl
+    tag: 1.24.17
+    pullPolicy: IfNotPresent
